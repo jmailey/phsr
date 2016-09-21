@@ -10,6 +10,8 @@ function preload() {
   game.load.spritesheet('character', '../assets/characterSprite.png', 32, 32);
 }
 
+var text;
+
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.world.setBounds(0, 0, 1300, 600);
@@ -17,13 +19,20 @@ function create() {
   createPlayer();
   buildWorld();
 
+
   var music = game.add.audio('bgmusic', .1, true);
   music.play();
+
+  var style = { font: "24px Arial", fill: "#fff" };
+  text =  game.add.text(700, 20, 'Best game ever', style);
 }
 
+
 function update() {
+
   player.body.velocity.x = 0;
   game.physics.arcade.collide(player, platforms);
+
 
   if (cursors.left.isDown) {
     player.body.velocity.x = -150;
@@ -41,6 +50,19 @@ function update() {
   if (cursors.up.isDown && player.body.touching.down) {
     player.body.velocity.y = -270;
   }
+
+  if(player.position.x > 700){
+    text.setText("Where are you going?");
+  }
+console.log(player.position.y);
+  if(player.position.y <= 58){
+    text.setText("You made it");
+  }
+
+  if(player.position.y > 58 && player.position.x < 700) {
+    text.setText("Best game ever");
+  }
+
 }
 
 function createPlayer() {
